@@ -18,10 +18,10 @@
 		<java.version>1.8</java.version>
 		<springframework.version>4.3.21.RELEASE</springframework.version>
 		<slf4j.version>1.7.25</slf4j.version>
-		<security.version>4.2.10.RELEASE</security.version>
+		<security.version>4.2.12.RELEASE</security.version>
 		<thymeleaf.version>3.0.11.RELEASE</thymeleaf.version>
 		<thymeleafspringsecurity4.version>3.0.4.RELEASE</thymeleafspringsecurity4.version>
-		<jackson.version>2.9.7</jackson.version>
+		<jackson.version>2.9.8</jackson.version>
 		<junit.version>4.12</junit.version>
 	</properties>
 
