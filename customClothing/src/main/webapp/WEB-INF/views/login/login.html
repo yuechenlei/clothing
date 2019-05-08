@@ -1,0 +1,266 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="keywords" content="小清新、服装定制、衣服定制、个性化。">
+<meta http-equiv="description" content="小清新网是一家把顾客和设计师联系在一起的平台，致力于个人穿戴的个性化追求，和设计师直接面对客户的梦想。">
+<link rel="shortcut icon" href="/customClothing/resources/images/favicon.ico" />
+<title>小清新网</title>
+<link rel="stylesheet" type="text/css" href="/customClothing/resources/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="/customClothing/resources/fontAwesome/css/font-awesome.min.css">
+<!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+<style type="text/css">
+
+</style>
+
+</head>
+
+<body style="background: #f8f8f8;padding-top: 70px;">
+
+<div class="container">
+<div class="row">
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>        
+            <span class="icon-bar"></span>    
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>    
+         </button>
+        <a class="navbar-brand" href="/customClothing/homepage">
+                              小清新
+        </a>
+      </div>
+      
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li class=""><a href="/customClothing/homepage">主页</a></li>
+          <li><a href="#">作品展览</a></li>
+        </ul>
+        
+        <p class="navbar-text navbar-right" style="margin-right: 5px;display: inline;" id="loginField">
+            <a href="/customClothing/loginRequest/toRegister" class="btn btn-default btn-xs" target="_self">注册 </a>
+        </p>
+      </div>
+    </div>
+  </nav>
+</div>
+</div>
+
+<div class="container">
+  <div class="row">
+  <div class="col-md-6 col-md-offset-3">
+  <div class="panel panel-default">
+    <div class="panel-heading text-center">
+        <h3 class="panel-title">登 录</h3>
+    </div>
+    <div class="panel-body">
+	<form class="form-horizontal" id="loginForm" method="post" action="#" th:action="@{/loginRequest/toLogin}" autocomplete="off" target="_self">
+		<!-- <input type="hidden" name="_csrf" value="" th:value="${_csrf.token}"/>  -->
+		<input type="hidden" name="_csrf_header" value="" th:value="${_csrf.headerName}"/>
+		<input type="hidden" name="_reLogin" value="" th:value="${reLogin}" id="_reLogin" />
+		<input type="hidden" name="_ip" value="" th:value="${ip}" id="_ip" />
+		
+		<!-- <h3 class="text-center">登 录</h3>  -->
+		<p id="reLoginWarning" style="display:none;color: red;" class="col-md-6 col-md-offset-4"></p>
+		<div class="form-group" id="accountGroup" style="margin-top: 20px">
+			<label for="loginAccount" class="sr-only">账户</label>
+			<div class="input-group col-md-8 col-md-offset-2">
+			    <div class="input-group-addon"><span class="glyphicon glyphicon-user"></span></div>
+				<input type="text" class="form-control" id="loginAccount" placeholder="手机号/电子邮箱" required aria-describedby="help1" 
+				       name="username" spellcheck="false">
+	      </div>
+	      <span id="help1" class="help-block col-md-8 col-md-offset-2"></span>
+		</div>
+		<div class="form-group" id="pwdGroup">
+			<label for="loginPwd" class="sr-only">密码</label>
+			<div class="input-group col-md-8 col-md-offset-2">
+			    <div class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></div>
+				<input type="password" class="form-control" id="loginPwd" placeholder="密码" required aria-describedby="help2" name="password">
+	        </div>
+	        <span id="help2" class="col-md-8 col-md-offset-2 help-block"></span>
+		</div>
+		<div class="form-group">
+		  <div class="col-md-offset-2">
+			<div class="checkbox">
+				<label >
+					<input type="checkbox" id="lgCheck" name="remember-me" >
+					<span>10天内免登录</span>
+				</label>
+				<span  style="margin-left: 90px;"><a href="#" >忘记密码?</a></span>
+			</div>
+	      </div>
+		</div>
+		
+		<div class="form-group">
+			  <div class="input-group col-md-8 col-md-offset-2 col-xs-12 ">
+				<button type="button" class="btn btn-primary btn-block" id="lgSubmit">确 定</button>
+			</div>
+		</div>
+		<div class="form-group">
+             <div class="input-group col-md-8 col-md-offset-2">
+                 <p id="tip" class="text-center" ></p>
+             </div>
+        </div>
+		
+		
+	</form>
+	</div>
+	</div>
+  </div>
+  </div>
+</div>
+
+
+
+	<script type="text/javascript" src="/customClothing/resources/js/jquery/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="/customClothing/resources/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/customClothing/resources/js/jquery/jquery.cookie.js"></script>
+
+	<script type="text/javascript">
+	 $(function() {
+		 
+		 var reLogin = $("#_reLogin").val();
+		 // var ip = $("#_ip").val();
+		 if(reLogin){
+			 $("#reLoginWarning").text("您的账号在其它地方登录了").show();
+		 }
+		 
+		    $("#loginAccount").focus(function(){
+		    	  $("#loginAccount").attr("placeholder","");
+		    }).blur(function(){
+		    	  $("#loginAccount").attr("placeholder","手机号/电子邮箱");
+		    }).keydown(function(){
+		    	$("#help1").text("");
+		    	$("#accountGroup").attr("class","form-group");
+		    	$("#tip").text("");
+		    });
+		    $("#loginPwd").focus(function(){
+		    	  $("#loginPwd").attr("placeholder","");
+		    }).blur(function(){
+		    	  $("#loginPwd").attr("placeholder","密码");
+		    }).keydown(function(){
+		    	$("#help2").text("");
+		    	$("#pwdGroup").attr("class","form-group");
+		    	$("#tip").text("");
+		    });
+	    });
+	 
+	    var loginCount=0;
+	    $("#lgSubmit").click(function(){
+	    	  var account = $.trim($("#loginAccount").val());
+	    	  var loginPwd = $.trim($("#loginPwd").val());
+	    	  var lgCheck = $("#lgCheck").prop("checked");
+	    	  
+	    	  var emptyPattern = /^\s+$/;
+	    	  if(!account || emptyPattern.test(account)){
+	    		  $("#help1").text("请输入账号");
+	    		  $("#accountGroup").attr("class","form-group has-error");
+	    		  return;
+	    	  }
+	    	  if (!loginPwd || emptyPattern.test(loginPwd)) {
+	    		  $("#help2").text("请输入密码");
+	    		  $("#pwdGroup").attr("class","form-group has-error");
+	    		  return;
+			  }
+	    	  var days=0;
+	    	  if(lgCheck){
+	    		  days=10;
+	    	  }
+	    	  loginCount++;
+	    	  var emailPattern = /^([\w\-\.])+@\w+([\-\.]\w+)*\.\w+([\-\.]\w+)*$/;
+	    	  var tpnPattern = /^1[0-9]{10}$/;
+	    	  if(!(emailPattern.test(account) || tpnPattern.test(account))){
+	    		  if(loginCount>3) {
+	    			  $("#help1").text("请输入正确的手机号码或电子邮箱,中间不要有空格");
+	    			  $("#accountGroup").attr("class","form-group has-error");
+	    			  return;
+	    		  }
+	    		  $("#help1").text("请输入正确的手机号码或电子邮箱");
+	    		  $("#accountGroup").attr("class","form-group has-error");
+	    		  return;
+	    	  }
+	    	  var pwdPattern = /^([\w\-\.]){6,20}$/;
+	    	  if(!pwdPattern.test(loginPwd)){
+	    		  if(loginCount>3) {
+	    			  $("#help2").text("密码为6-20位字母、数字组合，可包含(下划线_、减号-和点号.)三种特殊字符");
+	    			  $("#pwdGroup").attr("class","form-group has-error");
+	    			  return;
+	    		  }
+	    		  $("#help2").text("密码错误");
+	    		  $("#pwdGroup").attr("class","form-group has-error");
+	    		  return;
+	    	  }
+	    	  
+	    	  
+	    	  var header = $(":input[name='_csrf_header']").val();
+	    	  var token = $(":input[name='_csrf']").val();
+	    	  if(emailPattern.test(account)){
+	    		  
+	    		  $.ajax({
+	    			   type:"POST",
+	    			   url:"/customClothing/loginRequest/loginMitEmaiForAjax",
+	    			   data:{username:account,password:loginPwd},
+	    			   dataType:"json",
+	    			   async:true, // 默认值: true，异步请求。如果需要发送同步请求，设置为 false。
+	    			   beforeSend: function(xhr) {
+	    				   xhr.setRequestHeader(header, token);
+	    			    },
+	    			   statusCode: { 
+	    				   403: function() { $("#tip").attr("class","text-center text-warning").text("您停留此页面的时间太长了，请刷新后重试");return; }, 
+	    				   // 504: function() { alert('数据获取/输入失败，服务器没有响应。504'); }, 
+	    				   500: function() { $("#tip").attr("class","text-center text-warning").text("服务器出错");return; } 
+	    			   },
+	    			   success:function(result){
+	    				   // navigator.cookieEnabled  判断是否禁用cookie
+	    				   if(result.success){
+	    				       if(lgCheck){
+	    				    	    $.cookie('id', result.id, { expires: days, path: '/' });
+		    					    // $.cookie('email', result.email, { expires: days, path: '/' });
+	    				       }else{
+	    				    	    var cookieTime = new Date();
+		    				        // cookieTime.setTime(cookieTime.getTime() + (2*60*60*1000)); // 默认2小时
+	    				    	    $.cookie('id', result.id, {path: '/' });
+		    					    // $.cookie('email', result.email, { expires: cookieTime, path: '/' });
+	    				       }
+	    					   $("#loginForm").submit();
+	    					   // window.location.href="/customClothing/homepage";
+	    					   return;
+	    				   }else if(result.pwdError){
+	    					   $("#tip").attr("class","text-center text-danger").text(result.msg);
+	    					   return;
+	    				   }else if(result.unable){
+	    					   $("#tip").attr("class","text-center text-danger").text(result.msg);
+	    					   $("#tip").html(result.msg+" <a class='btn btn-success btn-xs' href='/customClothing/loginRequest/emailVerify?e="+account+"' >去激活</a>")
+	    					   return;
+	    				   }else if(result.inexistence){
+	    					   $("#tip").attr("class","text-center text-danger").text(result.msg);
+	    					   return;
+	    				   }else if(result.error){
+	    					   $("#tip").attr("class","text-center text-warning").text(result.msg);
+	    					   return;
+	    				   }
+	    			   },
+	    			   error:function(data){
+	    				   $("#tip").attr("class","text-center text-warning").text("系统繁忙，请稍后再试");
+	    				   return;
+	    			   }
+	    		   });
+	    	  }
+	    	  
+	    });
+		
+	</script>
+
+
+
+</body>
+</html>

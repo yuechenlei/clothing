@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xiaoqingxin.customClothing.mapper.UserMapper">
+	<resultMap type="user" id="userMap">
+
+		<id     property="id"                    column="id" />
+		<result property="mpNumber"              column="mp_number" />
+		<result property="password"              column="password" />
+		<result property="email"                 column="email" />
+		<result property="nickname"              column="nickname" />
+		<result property="role"                  column="role" />
+		<result property="avatar"                column="avatar" />
+		<result property="sex"                   column="sex" />
+		<result property="registerDate"          column="register_date" />
+		<result property="lastModifyDate"        column="last_modify_date" />
+		<result property="lastLoginDate"         column="last_login_date" />
+		<result property="lastLoginIp"           column="last_login_ip" />
+		<result property="version"               column="version" />
+		<result property="state"                 column="state" />
+		<result property="uuid"                  column="uuid" />
+		<result property="treaty"                column="treaty" />
+
+	</resultMap>
+
+	<sql id="userCols">
+		id,mp_number,password,email,nickname,role,avatar,sex,register_date,last_modify_date,last_login_date,last_login_ip
+		version,state,uuid,treaty
+	</sql>
+
+	<insert id="insert" parameterType="user">
+		insert into qing_user(mp_number,password,email,nickname,role,avatar,sex,register_date,last_modify_date,last_login_date,
+		                 last_login_ip,version,state,uuid,treaty)
+		values(#{mpNumber},#{password},#{email},#{nickname},#{role},#{avatar},#{sex},#{registerDate},#{lastModifyDate},
+		       #{lastLoginDate},#{lastLoginIp},#{version},#{state},#{uuid},#{treaty})
+	</insert>
+
+	<delete id="delete" parameterType="string">
+		delete from qing_user where id=#{id}
+	</delete>
+
+	<update id="update" parameterType="user">
+		update qing_user 
+		set  mp_number =#{mpNumber}, 
+		     password =#{password},
+		     email = #{email}, 
+		     nickname = #{nickname},
+		     role = #{role},
+		     avatar = #{avatar},
+		     sex = #{sex},
+		     register_date = #{registerDate},
+		     last_modify_date = #{lastModifyDate},
+		     last_login_date = #{lastLoginDate},
+		     last_login_ip = #{lastLoginIp},
+		     version = #{version},
+		     state = #{state},
+		     uuid = #{uuid},
+		     treaty = #{treaty}
+		where id= #{id}
+	</update>
+
+	<select id="get" parameterType="string" resultMap="userMap">
+		select <include refid="userCols" />  from qing_user 
+		where id = #{id}
+	</select>
+	
+	<select id="findByUuid" parameterType="string" resultMap="userMap">
+		select <include refid="userCols" />  from qing_user 
+		where uuid = #{uuid}
+	</select>
+	
+	<select id="findByEmail" parameterType="string" resultMap="userMap">
+		select <include refid="userCols" />  from qing_user 
+		where email = #{email}
+	</select>
+	
+	<select id="findByMPN" parameterType="string" resultMap="userMap">
+		select <include refid="userCols" />  from qing_user 
+		where mpNumber = #{mpn}
+	</select>
+	
+	<select id="findByEmailAndPwd" parameterType="string" resultMap="userMap">
+		select <include refid="userCols" />  from qing_user 
+		where email = #{email} and password = #{pwd}
+	</select>
+	
+	<select id="findByMPNAndPwd" parameterType="string" resultMap="userMap">
+		select <include refid="userCols" />  from qing_user 
+		where mpNumber = #{mpn} and password = #{pwd}
+	</select>
+
+	
+	
+</mapper>

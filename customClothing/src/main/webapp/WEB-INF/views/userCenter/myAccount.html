@@ -1,0 +1,558 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon"
+	href="/customClothing/resources/images/favicon.ico" />
+<title>小清新网-我的关注</title>
+<link rel="stylesheet" type="text/css"
+	href="/customClothing/resources/bootstrap/css/bootstrap.css">
+<!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+<style type="text/css">
+body {
+	padding-top: 60px;
+	padding-bottom: 1000px;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.infoBorder_1 {
+	border-width: 1px;
+	border-style: solid;
+	border-color: #ccc;
+	background-color: #f5f8fa;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+	border-bottom-right-radius: 0px;
+	border-bottom-left-radius: 0px;
+}
+
+.infoBorder_2 {
+	border-width: 1px;
+	border-style: none solid solid;
+	border-color: #ccc;
+	border-top-left-radius: 0px;
+	border-top-right-radius: 0px;
+	border-bottom-right-radius: 5px;
+	border-bottom-left-radius: 5px;
+}
+
+.wboxCenterTemp {
+	display: -webkit-box;
+	-webkit-box-pack: center;
+	-webkit-box-align: center;
+	-webkit-box-orient: vertical;
+	text-align: center;
+	float: none;
+	vertical-align: middle;
+}
+
+.wboxCenter {
+	display: -webkit-box;
+	-webkit-box-pack: center;
+	-webkit-box-align: center;
+	-webkit-box-orient: horizontal;
+	text-align: center;
+	vertical-align: middle;
+}
+
+.wboxSubCenter {
+	-webkit-box-flex: 1;
+}
+
+.myAList {
+	border: 0px !important;
+	border-bottom: 1px solid #e31436 !important;
+	border-radius: 0px !important;
+	color: #e31436 !important;
+}
+
+.myAListNoColor {
+	border: 0px !important;
+	border-bottom: 1px solid #ddd !important;
+	border-radius: 0px !important;
+}
+</style>
+</head>
+
+<body style="background: #f8f8f8">
+
+	<div class="container">
+		<div class="row">
+			<!-- Modal -->
+			<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+				aria-labelledby="myModalTitle">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+							<h4 class="modal-title" id="myModalTitle">提 示</h4>
+						</div>
+						<div class="modal-body">
+							<span>退出后，您下次需要重新登录！</span>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-primary"
+								data-dismiss="modal" id="loginOutAffirm">确 定</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container">
+		<div class="row">
+			<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+				<div class="container-fluid">
+					<div class="navbar-header navbar-left">
+						<button type="button" class="navbar-toggle collapsed"
+							data-toggle="collapse" data-target="#navbar"
+							aria-expanded="false" aria-controls="navbar">
+							<span class="sr-only">Toggle navigation</span> <span
+								class="icon-bar"></span> <span class="icon-bar"></span> <span
+								class="icon-bar"></span>
+						</button>
+						<a class="navbar-brand" href="/customClothing/homepage"> 小清新
+						</a>
+					</div>
+
+					<div class=" col-md-offset-3">
+						<div id="navbar" class="collapse navbar-collapse">
+							<ul class="nav navbar-nav">
+								<li><a href="#" th:text="'欢迎您，' +${#authentication.name}"></a></li>
+							</ul>
+
+							<div sec:authorize="isAuthenticated()" class=" col-md-offset-5">
+								<ul class="nav navbar-nav " id="accountField">
+									<li class="dropdown"><a class="dropdown-toggle" href="#"
+										id="accountName" role="button" data-toggle="dropdown"
+										aria-haspopup="true" aria-expanded="false"> <!-- <img alt="用户中心"  th:alt="${#authentication.name}" src="#" width="20px;" height="20px;" id="accountImg" >  -->
+											<span>个人中心</span> <span class="caret"></span>
+									</a>
+										<ul class="dropdown-menu">
+											<li><a href="#" th:href="@{/personal/index}">我的首页</a></li>
+											<li role="separator" class="divider"></li>
+											<li><a href="#" th:href="@{/personal/myOrder}">我的订单</a></li>
+											<li role="separator" class="divider"></li>
+											<li><a href="#" th:href="@{/personal/myInterest}">我的关注</a></li>
+											<li role="separator" class="divider"></li>
+											<li><a href="#" th:href="@{/personal/myBodyInfo}">量体信息</a></li>
+											<li role="separator" class="divider"></li>
+											<li><a href="#" th:href="@{/personal/myAccount}">账号设置</a></li>
+										</ul></li>
+								</ul>
+							</div>
+
+
+							<div sec:authorize="isAuthenticated()">
+								<ul class="nav navbar-nav" id="serviceField">
+									<li class="dropdown"><a class="dropdown-toggle" href="#"
+										id="service" role="button" data-toggle="dropdown"
+										aria-haspopup="true" aria-expanded="false"> <!-- <img alt="用户中心"  th:alt="${#authentication.name}" src="#" width="20px;" height="20px;" id="accountImg" >  -->
+											<span th:text="联系客服"></span> <span class="caret"></span>
+									</a>
+										<ul class="dropdown-menu">
+											<li><a href="#" th:href="@{/personal/index}">在线客服</a></li>
+											<li role="separator" class="divider"></li>
+											<li><a href="#" th:href="@{/personal/index}">投诉建议</a></li>
+										</ul></li>
+								</ul>
+							</div>
+
+							<div sec:authorize="isAuthenticated()">
+								<ul class="nav navbar-nav">
+									<li class="dropdown"><a class="dropdown-toggle" href="#"
+										id="navbarDropdown" role="button" data-toggle="dropdown"
+										aria-haspopup="true" aria-expanded="false">加盟 <span
+											class="caret"></span></a>
+										<ul class="dropdown-menu">
+											<li><a href="#">设计师加盟</a></li>
+											<li role="separator" class="divider"></li>
+											<li><a href="#">面料商加盟</a></li>
+										</ul> <input type="hidden" id="idFromSession" value=""
+										th:value="${session.id}"></li>
+								</ul>
+							</div>
+
+							<ul class="nav navbar-nav">
+								<li></a><a href="#" th:text="消息"></a></li>
+							</ul>
+
+							<ul class="nav navbar-nav navbar-right">
+								<li><a href="#" id="loginOut">退出</a></li>
+							</ul>
+
+						</div>
+					</div>
+				</div>
+			</nav>
+		</div>
+	</div>
+
+	<div class="container">
+		<div class="row">
+		   <input type="hidden" name="_csrf_header" value="" th:value="${_csrf.headerName}"/>
+           <input type="hidden" name="_csrf.parameterName" value="" th:value="${_csrf.parameterName}" id="csrfParameterName" />
+           <input type="hidden" name="_csrf.token" value="" th:value="${_csrf.token}" id="csrfToken" />
+
+			<div class="col-md-1 col-md-offset-1 hidden-xs hidden-sm pull-left"
+				id="navigationList" style="position: fixed;">
+				<div class="list-group">
+					<a href="#" th:href="@{/personal/index}" class="list-group-item">我的首页</a>
+					<a href="#" th:href="@{/personal/myOrder}" class="list-group-item ">我的订单</a>
+					<a href="#" th:href="@{/personal/myInterest}"
+						class="list-group-item">我的关注</a> <a href="#"
+						th:href="@{/personal/myBodyInfo}" class="list-group-item">量体信息</a>
+					<a href="#" th:href="@{/personal/myAccount}"
+						class="list-group-item list-group-item-info ">账号设置</a>
+				</div>
+			</div>
+
+
+			<div class="col-md-8 col-md-offset-3" style="">
+
+				<div class="list-group" style="">
+
+					<div class="wboxCenter" style="display: -webkit-box;">
+
+						<div style="-webkit-box-flex: 1;">
+							<a href="#" class="aListOpt list-group-item myAList" style=""
+								id="myInfo">我的资料</a>
+						</div>
+						<div style="-webkit-box-flex: 1;">
+							<a href="#" class="aListOpt list-group-item myAListNoColor"
+								style="" id="myDressStyle">着装偏好</a>
+						</div>
+						<div style="-webkit-box-flex: 1;">
+							<a href="#" class="aListOpt list-group-item myAListNoColor"
+								style="" id="myAccountSafety">账号安全</a>
+						</div>
+						<div style="-webkit-box-flex: 1;">
+							<a href="#" class="aListOpt list-group-item myAListNoColor"
+								style="" id="myAddress">收货地址</a>
+						</div>
+
+					</div>
+				</div>
+                <!-- 电脑端 -->
+                <div class="col-md-4 col-xs-10 pull-right hidden-xs hidden-sm" style="">
+
+					<form action="#" enctype="multipart/form-data" method="post" class="" style="position:absolute;right:0px;"
+					                 id="avatarForm">
+
+						<label style="cursor: pointer;" for="fileUpload" id="fileUploadLabel" title="点击更改头像">
+						<input type="file" value="选择图片" style="opacity: 0.0; display: none;" name="avatar" id="fileUpload" accept="image/jpeg,image/png,image/gif">
+						<img src="/customClothing/resources/images/meinPhoto.jpg" th:src="${avatar}?${avatar}:${generalAvatar}"
+							 class="img-responsive img-rounded" alt="头像" height="200px;"
+							 width="200px;" id="fileUploadProfile">
+						</label>
+						<div class="progress" style="height: 10px;display: none;">
+                          <div id="myProBar" class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+                            <span class="sr-only" id="myProSpan">0% Complete</span>
+                          </div>
+                        </div>
+						<div class="" style="display: none; padding-left: auto;padding-right: auto;" id="avatarOptDiv">
+							<input type="button" value="保存" id="avatarUpload">
+							<input type="button" value="删除" id="avatarDelete">
+							<input type="button" value="取消" id="avatarCancel">
+						</div>
+					</form>
+
+				</div>
+				<!-- 移动端 -->
+				<div class="col-xs-10 col-xs-offset-4 col-sm-8 col-sm-offset-5 visible-xs-block visible-sm-block" style="">
+
+					<form action="#" enctype="multipart/form-data" method="post" class="" style="" id="avatarFormForP">
+
+						<label style="cursor: pointer;" for="fileUploadForP" id="fileUploadLabelForP" title="点击更改头像">
+						<input type="file" value="选择图片" style="opacity: 0.0; display: none;" name="avatar" id="fileUploadForP">
+						<img src="/customClothing/resources/images/meinPhoto.jpg"
+							 class="img-responsive img-rounded" alt="头像" height="100px;"
+							 width="100px;" id="fileUploadProfileForP">
+						</label>
+						<div class="" style="display: none;" id="avatarOptDivForP">
+							<input type="button" value="保存">
+							<input type="button" value="删除" id="avatarDeleteForP">
+							<input type="button" value="取消" id="avatarCancelForP">
+						</div>
+					</form>
+
+				</div>
+                
+				<div>
+					<form class="form-horizontal" action="#">
+						<div class="form-group">
+							<label for="inputEmail3" class="col-md-2 control-label">昵称</label>
+							<div class="col-md-5">
+								<input type="text" class="form-control" id="inputEmail3"
+									placeholder="行走江湖岂能没有名姓">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="inputPassword3" class="col-md-2 control-label">手机</label>
+							<div class="col-md-5">
+								<input type="text" class="form-control" id="inputPassword3"
+									placeholder="手机号码">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="inputPassword3" class="col-md-2 control-label">电子邮箱</label>
+							<div class="col-md-5">
+								<input type="text" class="form-control" id="inputPassword3"
+									placeholder="电子邮箱">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="inputPassword3" class="col-md-2 control-label">性别</label>
+							<div class="col-md-5">
+								<input type="text" class="form-control" id="inputPassword3"
+									placeholder="女或男">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="inputPassword3" class="col-md-2 control-label">出生日期</label>
+							<div class="col-md-5">
+								<input type="text" class="form-control" id="inputPassword3"
+									placeholder="1990-02-11">
+							</div>
+						</div>
+
+						<div class="form-group">
+							<div class="col-md-offset-2 col-md-5">
+								<button type="button" class="btn btn-default btn-block">修 改</button>
+							</div>
+						</div>
+					</form>
+
+				</div>
+				
+
+
+			</div>
+
+		</div>
+	</div>
+
+
+	<form action="#" th:action="@{/loginRequest/loginOut}" style="display: none;" id="logOutForm" method="post"></form>
+	<script type="text/javascript" src="/customClothing/resources/js/jquery/jquery-3.3.1.min.js"></script>
+	<script type="text/javascript" src="/customClothing/resources/bootstrap/js/bootstrap.js"></script>
+	<script type="text/javascript" src="/customClothing/resources/js/jquery/jquery.cookie.js"></script>
+
+	<script type="text/javascript">
+		$(function() {
+			// 检测页面是否是当前打开页面的最外层，如果不是，将最外层的地址换成本页面的地址
+			// 客户端 frame busting JavaScript 作为对 XFS 的保护
+			if (top != self) {
+				top.location.replace(self.location.href);
+			}
+			
+			$("#loginOut").click(function() {
+				$('#myModal').modal({
+					keyboard : true
+				});
+
+				$("#loginOutAffirm").click(function() {
+					$.cookie('id', null, {
+						expires : -1,
+						path : '/'
+					});
+					// $.cookie('email', null, { expires: -1, path: '/' });
+					// window.location.href="/customClothing/homepage";
+					// window.location.href="/customClothing/loginRequest/loginOut";
+					$("#logOutForm").submit();
+				});
+
+				$('#myModal').on('hidden.bs.modal', function(e) {
+					// 在模态框消失后要做的事
+				});
+
+			});
+			// -----------------------------子导航-----------------------------
+			$("#myInfo").click(
+					function() {
+						$(".aListOpt").attr("class",
+								"aListOpt list-group-item myAListNoColor");
+						$("#myInfo").attr("class",
+								"aListOpt list-group-item myAList");
+					});
+
+			$("#myDressStyle").click(
+					function() {
+						$(".aListOpt").attr("class",
+								"aListOpt list-group-item myAListNoColor");
+						$("#myDressStyle").attr("class",
+								"aListOpt list-group-item myAList");
+					});
+
+			$("#myAccountSafety").click(
+					function() {
+						$(".aListOpt").attr("class",
+								"aListOpt list-group-item myAListNoColor");
+						$("#myAccountSafety").attr("class",
+								"aListOpt list-group-item myAList");
+					});
+
+			$("#myAddress").click(
+					function() {
+						$(".aListOpt").attr("class",
+								"aListOpt list-group-item myAListNoColor");
+						$("#myAddress").attr("class",
+								"aListOpt list-group-item myAList");
+					});
+			
+			
+			
+			// -------------------------------移动端头像更改---------------------------
+			
+			var avatarSrcForP = $("#fileUploadProfileForP").attr("src");
+			$("#fileUploadForP").change(function() {
+				var $file = $(this);
+				var fileObj = $file[0];
+				var windowURL = window.URL || window.webkitURL;
+				var dataURL;
+				var $img = $("#fileUploadProfileForP");
+
+				if (fileObj && fileObj.files && fileObj.files[0]) {
+					dataURL = windowURL.createObjectURL(fileObj.files[0]);
+					$img.attr('src', dataURL);
+				} else {
+					dataURL = $file.val();
+					alert("第二个条件，dataURL=" + dataURL);
+					$img.attr('src', avatarSrcForP);
+					// var imgObj = document.getElementById("fileUploadProfileForP");
+					// imgObj.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale)";
+					// imgObj.filters.item("DXImageTransform.Microsoft.AlphaImageLoader").src = dataURL;
+				}
+
+				$("#avatarOptDivForP").show();
+			});
+
+			$("#avatarCancelForP").click(function() {
+				$("#fileUploadProfileForP").attr('src', avatarSrcForP);
+				$("#avatarOptDivForP").hide();
+			});
+
+		});
+		
+		// -----------------------------电脑端头像更改-----------------------------
+
+		var avatarSrc = $("#fileUploadProfile").attr("src");
+		$("#fileUpload").change(function() {
+			var $file = $(this);
+			var fileObj = $file[0];
+			var windowURL = window.URL || window.webkitURL;
+			var dataURL;
+			var $img = $("#fileUploadProfile");
+
+			if (fileObj && fileObj.files && fileObj.files[0]) {
+				dataURL = windowURL.createObjectURL(fileObj.files[0]);
+				$img.attr('src', dataURL);
+			} else {
+				dataURL = $file.val();
+				alert("第二个条件，dataURL=" + dataURL);
+				$img.attr('src', avatarSrc);
+				//var imgObj = document.getElementById("fileUploadProfile");
+				// 两个坑:
+				// 1、在设置filter属性时，元素必须已经存在在DOM树中，动态创建的Node，也需要在设置属性前加入到DOM中，先设置属性在加入，无效；
+				// 2、src属性需要像下面的方式添加，上面的两种方式添加，无效；
+				//imgObj.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale)";
+				//imgObj.filters.item("DXImageTransform.Microsoft.AlphaImageLoader").src = dataURL;
+
+			}
+
+			$("#avatarOptDiv").show();
+		});
+
+		$("#avatarCancel").click(function() {
+			$("#fileUploadProfile").attr('src', avatarSrc);
+			$("#avatarOptDiv").hide();
+		});
+		var xhr;
+		$("#avatarUpload").click(function() {
+			$("#avatarOptDiv").hide();
+			var csrfParameterName = $("#csrfParameterName").val();
+			var csrfToken = $("#csrfToken").val();
+			var fd = new FormData();
+			var file = document.getElementById("fileUpload").files[0];
+			fd.append("multipartFile",file);
+			fd.append(csrfParameterName,csrfToken);
+			
+			
+			xhr = new XMLHttpRequest();
+			xhr.upload.addEventListener("progress",onUploadProgress,false);
+			xhr.addEventListener("load",onUploadComplete,false);
+			xhr.addEventListener("error",onUploadFailed,false);
+			xhr.onreadystatechange=uploadCallback;
+			
+			//$.post({
+			//	url:"/customClothing/personal/uploadAvatar",
+			//	data:{fd:fd,csrfParameterName:csrfToken},
+			//	dataType:"json",
+			//	async:true,
+			//	success:function(result){
+			//		   if(result.success){
+			//			   avatarSrc = result.path;
+			//			   $("#fileUploadProfile").attr("src", path);
+			//		   }
+			//	}
+			 //   
+			//});
+			
+			xhr.open("POST","uploadAvatar",true);
+			xhr.send(fd);
+			
+			
+		});
+		
+		function onUploadProgress(e){
+			$(".progress").show();
+			$("#myProBar").attr("style","width:0%");
+			$("#myProSpan").text("0% Complete");
+			if(e.lengthComputable){
+				var percentComplete = parseInt((e.loaded)*100);
+				//var bar = 
+			    $("#myProBar").attr("style","width:"+percentComplete+"%");
+				// bar.style.width=percentComplete+"%";
+				$("#myProSpan").text(percentComplete+"% Complete");
+			}else{
+				alert("上传显示progress失败");
+			}
+		}
+		
+		function onUploadComplete(e){
+			$("#myProBar").attr("style","width:100%");
+			$("#myProSpan").text("100% Complete");
+			$(".progress").hide(500);
+		}
+		
+		function onUploadFailed(e){
+			alert("上传头像失败");
+		}
+
+		function uploadCallback() {
+			if (xhr.readyState==4 && xhr.status==200){
+		        var str = JSON.parse(xhr.responseText);
+		        var path = str.path;
+			    avatarSrc = "http://"+path;
+				$("#fileUploadProfile").attr("src", avatarSrc);
+		    }
+		}
+		
+		
+		
+	</script>
+
+
+
+</body>
+</html>

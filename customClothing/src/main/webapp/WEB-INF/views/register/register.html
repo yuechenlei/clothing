@@ -1,0 +1,297 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="keywords" content="小清新、服装定制、衣服定制、个性化。">
+<meta http-equiv="description" content="小清新网是一家把顾客和设计师联系在一起的平台，致力于个人穿戴的个性化追求，和设计师直接面对客户的梦想。">
+<link rel="shortcut icon" href="/customClothing/resources/images/favicon.ico" />
+<title>小清新网</title>
+<link rel="stylesheet" type="text/css" href="/customClothing/resources/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="/customClothing/resources/fontAwesome/css/font-awesome.min.css">
+<!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+<style type="text/css">
+
+</style>
+
+</head>
+
+<body style="background: #f8f8f8;padding-top: 70px;" >
+
+<div class="container">
+<div class="row">
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>        
+            <span class="icon-bar"></span>    
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>    
+         </button>
+        <a class="navbar-brand" href="/customClothing/homepage">
+                              小清新
+        </a>
+      </div>
+      
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li class=""><a href="/customClothing/homepage">主页</a></li>
+          <li><a href="#">作品展览</a></li>
+        </ul>
+        
+        <p class="navbar-text navbar-right" style="margin-right: 5px;display: inline;" id="loginField">
+            <a href="/customClothing/loginRequest/toLogin" class="btn btn-default btn-xs" target="_self">登录 </a>
+        </p>
+      </div>
+    </div>
+  </nav>
+</div>
+</div>
+    
+<div class="container">
+  <div class="row">
+  <div class="col-md-6 col-md-offset-3" style="border-width: 1px; border-style: solid; border-color: #ccc;border-radius: 5px;">
+    <div><h3 class="text-center ">注 册</h3></div>
+	<form  class="form-horizontal" id="registerForm" method="post" action="#" th:action="@{/loginRequest/newEmailRegister}" autocomplete="off" target="_self">
+		<!-- <input type="hidden" name="_csrf" value="" th:value="${_csrf.token}"/>  -->
+		<input type="hidden" name="_csrf_header" value="" th:value="${_csrf.headerName}"/>
+		
+		<div class="form-group" id="reEmailGroup">
+			<label for="reEmail" class="sr-only">电子邮箱</label>
+			<div class="input-group col-md-8 col-md-offset-2">
+			    <div class="input-group-addon"><span class="glyphicon glyphicon-user"></span></div>
+				<input type="email" class="form-control" id="reEmail" placeholder="电子邮箱" required 
+				                            spellcheck="false" name="username" aria-describedby="help1" >
+			</div>
+			<span id="help1" class="help-block col-md-8 col-md-offset-2"></span>
+		</div>
+		<div class="form-group" id="pwd1Group">
+			<label for="pwd1" class="sr-only">密码</label>
+			<div class="input-group col-md-8 col-md-offset-2">
+			    <div class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></div> 
+				<input type="password" class="form-control " id="pwd1" placeholder="密码" required 
+				                             name="password" aria-describedby="help2" >
+			</div>
+			<span id="help2" class="help-block col-md-8 col-md-offset-2"></span>
+		</div>
+		<div class="form-group" id="pwd2Group">
+			<label for="pwd2" class="sr-only">确认密码</label>
+			<div class="input-group col-md-8 col-md-offset-2">
+			    <div class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></div>
+				<input type="password" class="form-control" id="pwd2" placeholder="确认密码" required  
+				                           name="password2" aria-describedby="help3" >
+			</div>
+			<span id="help3" class="help-block col-md-8 col-md-offset-2"></span>
+		</div>
+		<div class="form-group" id="reCheckGroup">
+		    <div class="input-group col-md-offset-2" >
+				<div class="checkbox">
+				    <label>
+					    <input type="checkbox" id="reCheck"  required aria-describedby="help4" name="reCheck" >
+					    <span >同意<a href="#" > 用户协议</a></span> 
+					    <span id="help4" class="help-block"></span>
+			        </label>
+			</div>
+		  </div>
+		</div>
+		<div class="form-group">
+            <div class="input-group col-md-8 col-md-offset-2 col-xs-12">
+				<button type="button" class="btn btn-primary btn-block" id="registerSubmit">确 定</button>
+		    </div>
+		</div>
+		<p id="tip" class="text-center" ></p>
+		
+		<div class="form-group">
+		<div class="input-group col-md-8 col-md-offset-2 col-xs-12" id="myProDiv" style="display: none;">
+		<div class="progress" style="height: 10px;">
+          <div id="myProBar" class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+            <span class="sr-only" id="myProSpan">0% Complete</span>
+          </div>
+        </div>
+        </div>
+        </div>
+	</form>
+  </div>
+  </div>
+</div>
+
+	<script type="text/javascript" src="/customClothing/resources/js/jquery/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="/customClothing/resources/bootstrap/js/bootstrap.min.js"></script>
+
+	<script type="text/javascript">
+    $(function() {
+	    $("#reEmail").focus(function(){
+	    	  $("#reEmail").attr("placeholder","");
+	    }).blur(function(){
+	    	  $("#reEmail").attr("placeholder","电子邮箱");
+	    }).keydown(function(){
+	    	$("#help1").text("");
+	    	$("#reEmailGroup").attr("class","form-group");
+	    	
+	    });
+	    $("#pwd1").focus(function(){
+	    	  $("#pwd1").attr("placeholder","");
+	    }).blur(function(){
+	    	  $("#pwd1").attr("placeholder","密码");
+	    }).keydown(function(){
+	    	$("#help2").text("");
+	    	$("#pwd1Group").attr("class","form-group");
+	    });
+	    $("#pwd2").focus(function(){
+	    	  $("#pwd2").attr("placeholder","");
+	    }).blur(function(){
+	    	  $("#pwd2").attr("placeholder","确认密码");
+	    }).keydown(function(){
+	    	$("#help3").text("");
+	    	$("#pwd2Group").attr("class","form-group");
+	    });
+	    $("#reCheckGroup").mouseover(function(){
+	    	  $("#reCheckGroup").attr("class","form-group");
+	    });
+	    
+	    $("#registerSubmit").click(function(){
+	    	  // showPro();
+	    	  var email = $.trim($("#reEmail").val());
+	    	  var pwd1 = $.trim($("#pwd1").val());
+	    	  var pwd2 = $.trim($("#pwd2").val());
+	    	  var recheck = $("#reCheck").prop("checked");
+	    	  
+	    	  var emptyPattern = /^\s+$/;
+	    	  if(!email || emptyPattern.test(email)){
+	    		  $("#help1").text("请输入电子邮箱地址");
+	    		  $("#reEmail").attr("value","");
+	    		  $("#reEmailGroup").attr("class","form-group has-error");
+	    		  return;
+	    	  }
+	    	  if (!pwd1 || emptyPattern.test(pwd1)) {
+	    		  $("#help2").text("请输入密码");
+	    		  $("#pwd1").attr("value","");
+	    		  $("#pwd1Group").attr("class","form-group has-error");
+	    		  return;
+			  }
+	    	  if (!pwd2 || emptyPattern.test(pwd2)) {
+	    		  $("#help3").text("请确认密码");
+	    		  $("#pwd2").attr("value","");
+	    		  $("#pwd2Group").attr("class","form-group has-error");
+	    		  return;
+			  }
+	    	  if(pwd1.length<6){
+	    		  $("#help2").text("密码太简单了");
+	    		  $("#pwd1Group").attr("class","form-group has-error");
+	    		  return;
+	    	  }
+	    	  
+	    	  if (pwd1 != pwd2) {
+	    		  $("#help3").text("两次密码不一致");
+	    		  $("#pwd1Group").attr("class","form-group has-error");
+	    		  $("#pwd2Group").attr("class","form-group has-error");
+	    		  return;
+			  }
+	    	  if(!recheck){
+	    		  $("#help4").text("请仔细查看我们的用户协议，我们遵守相关法律，保护您的个人隐私不被侵犯");
+	    		  $("#reCheckGroup").attr("class","form-group has-error");
+	    		  return;
+	    	  }
+	    	  registerCount++;
+	    	  var emailPattern = /^([\w\-\.])+@\w+([\-\.]\w+)*\.\w+([\-\.]\w+)*$/;
+	    	  if(!emailPattern.test(email)){
+	    		  if(registerCount>2) {
+	    			  $("#help1").text("邮箱地址只能包含英文字母、数字、下划线_、减号-和点号.");
+	    			  $("#reEmailGroup").attr("class","form-group has-error");
+	    			  return;
+	    		  }
+	    		  $("#help1").text("请输入正确的电子邮箱");
+	    		  $("#reEmailGroup").attr("class","form-group has-error");
+	    		  return;
+	    	  }
+	    	  
+	    	  var pwdPattern = /^([\w\-\.]){6,20}$/;
+	    	  if(!pwdPattern.test(pwd1)){
+	    		  if(registerCount>2) {
+	    			  $("#help2").text("密码为6-20位字母、数字组合，可包含(下划线_、减号-和点号.)三种特殊字符");
+	    			  $("#pwd1Group").attr("class","form-group has-error");
+	    			  return;
+	    		  }
+	    		  $("#help2").text("密码包含非法字符");
+	    		  $("#pwd1Group").attr("class","form-group has-error");
+	    		  return;
+	    	  }
+	    	  
+	    	  var header = $(":input[name='_csrf_header']").val();
+	    	  var token = $(":input[name='_csrf']").val();
+	    	  showPro();
+	    	  $.ajax({
+				   type:"POST",
+				   url:"/customClothing/loginRequest/newEmailRegister",
+				   data:{username:email,password:pwd1,password2:pwd2,reCheck:recheck},
+				   dataType:"json",
+				   async:true,
+				   beforeSend: function(xhr) {
+    				   xhr.setRequestHeader(header, token);
+    			    },
+				   success:function(result){
+					   if(result.success){
+						   hiddenPro();
+						   window.location.href="/customClothing/loginRequest/emailVerify?e="+email;
+					   }else if(result.existence){
+						   hiddenPro();
+						   $("#tip").attr("class","text-center text-danger").text(result.msg);
+					   }else if(result.error){
+						   hiddenPro();
+						   $("#tip").attr("class","text-center text-danger").text(result.msg);
+					   }
+				   },
+				   error:function(data){
+					   hiddenPro();
+					   $("#tip").attr("class","text-center text-warning").text("系统繁忙，请稍后再试");
+				   }
+			   });
+	    });
+    });
+    
+    var registerCount=0;
+    var t=20;
+	var c=0;
+    
+    function showPro() {
+    	$("#myProBar").attr("aria-valuenow",0).attr("style","width:0% ;");
+		$("#myProSpan").text("0%  已完成")
+		$("#myProDiv").show();
+		myProGo();
+		return;
+	}
+    
+    function myProGo() {
+		if(t<0) {
+			t=20;
+			c=0;
+			return;
+		}
+		$("#myProBar").attr("aria-valuenow",""+c).attr("style","width:"+c+"% ;");
+		$("#myProSpan").text(""+c+"% 已完成")
+		
+		t=t-1;
+		c=c+5;
+		window.setTimeout("myProGo()",100);
+	}
+    
+    function hiddenPro() {
+    	$("#myProDiv").hide();
+    	t=20;
+		c=0;
+		return;
+	}
+    
+    </script>
+
+
+
+</body>
+</html>
